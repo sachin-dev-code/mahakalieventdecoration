@@ -1,4 +1,4 @@
-import { Users, Award, Heart, Target } from "lucide-react";
+import { Users, Award, Heart, Target, Phone, Instagram, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -135,7 +135,7 @@ const About = () => {
             </p>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-center gap-12 max-w-3xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-center gap-12 max-w-3xl mx-auto mb-16">
             {[
               { name: "Sachin Bothiya", role: "Co-Founder", phone: "6355881337" },
               { name: "Chirag Bothiya", role: "Co-Founder", phone: "6353276266" }
@@ -156,6 +156,53 @@ const About = () => {
                 </a>
               </div>
             ))}
+          </div>
+
+          {/* Contact Information */}
+          <div className="max-w-3xl mx-auto">
+            <h3 className="font-display text-2xl font-bold text-center mb-8">
+              Get In <span className="gradient-text-gold">Touch</span>
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <a
+                href="tel:6355881337"
+                className="card-festive p-6 flex flex-col items-center gap-3 group text-center"
+              >
+                <div className="w-14 h-14 rounded-xl bg-gradient-festive flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Phone className="w-6 h-6 text-cream" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Call Us</p>
+                  <p className="font-semibold">6355881337</p>
+                  <p className="font-semibold">6353276266</p>
+                </div>
+              </a>
+
+              <a
+                href="https://instagram.com/mahakali_.event_and_decoration"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card-festive p-6 flex flex-col items-center gap-3 group text-center"
+              >
+                <div className="w-14 h-14 rounded-xl bg-gradient-festive flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Instagram className="w-6 h-6 text-cream" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Instagram</p>
+                  <p className="font-semibold text-sm">@mahakali_.event_and_decoration</p>
+                </div>
+              </a>
+
+              <div className="card-festive p-6 flex flex-col items-center gap-3 text-center">
+                <div className="w-14 h-14 rounded-xl bg-gradient-festive flex items-center justify-center">
+                  <MapPin className="w-6 h-6 text-cream" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Location</p>
+                  <p className="font-semibold">Gujarat, India</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
