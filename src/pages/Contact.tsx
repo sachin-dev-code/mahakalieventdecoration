@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Phone, Instagram, MapPin, Send, MessageCircle } from "lucide-react";
+import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -59,7 +59,7 @@ const Contact = () => {
 
       <section className="section-padding pt-8">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <div className="max-w-2xl mx-auto">
             {/* Contact Form */}
             <div className="card-festive p-8">
               <h2 className="font-display text-2xl font-bold mb-6">
@@ -113,85 +113,6 @@ const Contact = () => {
                   <Send className="w-4 h-4 ml-2" />
                 </Button>
               </form>
-            </div>
-
-            {/* Contact Info */}
-            <div className="space-y-8">
-              <div>
-                <h2 className="font-display text-2xl font-bold mb-6">
-                  Contact Information
-                </h2>
-                <p className="text-muted-foreground mb-8">
-                  Reach out to us directly through phone or social media. 
-                  We're always happy to discuss your event requirements.
-                </p>
-              </div>
-
-              {/* Contact Cards */}
-              <div className="space-y-4">
-                <a
-                  href="tel:6355881337"
-                  className="card-festive p-6 flex items-center gap-4 group"
-                >
-                  <div className="w-14 h-14 rounded-xl bg-gradient-festive flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Phone className="w-6 h-6 text-cream" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Call Sachin</p>
-                    <p className="font-semibold text-lg">6355881337</p>
-                  </div>
-                </a>
-
-                <a
-                  href="tel:6353276266"
-                  className="card-festive p-6 flex items-center gap-4 group"
-                >
-                  <div className="w-14 h-14 rounded-xl bg-gradient-festive flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Phone className="w-6 h-6 text-cream" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Call Chirag</p>
-                    <p className="font-semibold text-lg">6353276266</p>
-                  </div>
-                </a>
-
-                <a
-                  href="https://instagram.com/mahakali_.event_and_decoration"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="card-festive p-6 flex items-center gap-4 group"
-                >
-                  <div className="w-14 h-14 rounded-xl bg-gradient-festive flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Instagram className="w-6 h-6 text-cream" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Instagram</p>
-                    <p className="font-semibold">@mahakali_.event_and_decoration</p>
-                  </div>
-                </a>
-
-                <div className="card-festive p-6 flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-gradient-festive flex items-center justify-center">
-                    <MapPin className="w-6 h-6 text-cream" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Location</p>
-                    <p className="font-semibold">Gujarat, India</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Quick Contact */}
-              <div className="glass-card p-6 border-primary/30">
-                <div className="flex items-center gap-3 mb-4">
-                  <MessageCircle className="w-6 h-6 text-primary" />
-                  <h3 className="font-display text-lg font-semibold">Quick Response</h3>
-                </div>
-                <p className="text-muted-foreground text-sm">
-                  For immediate assistance, call us directly. We typically respond 
-                  to all inquiries within 2-4 hours during business hours.
-                </p>
-              </div>
             </div>
           </div>
         </div>
