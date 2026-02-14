@@ -216,6 +216,10 @@ const TestimonialsSection = () => {
                   />
                 </div>
 
+                <p className="text-xs text-muted-foreground">
+                  By submitting, your name, location, and review will be publicly visible on this page.
+                </p>
+
                 <Button type="submit" className="btn-gold w-full" disabled={isSubmitting}>
                   {isSubmitting ? "Submitting..." : "Submit Review"}
                   <Send className="w-4 h-4 ml-2" />

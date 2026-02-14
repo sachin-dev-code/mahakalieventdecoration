@@ -24,10 +24,10 @@ const Auth = () => {
 
     toast({
       title: "Welcome! 🎉",
-      description: `Hello ${formData.fullName}, you're now logged in.`,
+      description: `Hello ${formData.fullName}, your info has been saved.`,
     });
 
-    // Store user info in localStorage for demo
+    // Store customer info in localStorage for pre-filling forms
     localStorage.setItem("mahakali_user", JSON.stringify(formData));
     
     setIsSubmitting(false);
@@ -56,7 +56,7 @@ const Auth = () => {
         {/* Login Form */}
         <div className="card-festive p-8">
           <h2 className="font-display text-2xl font-bold text-center mb-2">
-            Welcome Back
+            Get Started
           </h2>
           <p className="text-muted-foreground text-center mb-8">
             Enter your details to continue
@@ -111,7 +111,7 @@ const Auth = () => {
               className="btn-gold w-full text-lg py-6"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Logging in..." : "Continue"}
+              {isSubmitting ? "Saving..." : "Continue"}
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </form>
