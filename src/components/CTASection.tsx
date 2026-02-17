@@ -58,7 +58,6 @@ const CTASection = () => {
 
           {/* Trust indicators */}
           <div className="flex flex-wrap justify-center gap-8 pt-8 text-cream/70 text-sm">
-            <span>✓ No Advance Payment</span>
             <span>✓ Free Consultation</span>
             <span>✓ 24/7 Support</span>
           </div>
