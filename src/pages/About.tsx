@@ -193,15 +193,20 @@ const About = () => {
                 </div>
               </a>
 
-              <div className="card-festive p-6 flex flex-col items-center gap-3 text-center">
-                <div className="w-14 h-14 rounded-xl bg-gradient-festive flex items-center justify-center">
+              <a
+                href="https://maps.app.goo.gl/9HHYRKdXZj98Avgs7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card-festive p-6 flex flex-col items-center gap-3 group text-center"
+              >
+                <div className="w-14 h-14 rounded-xl bg-gradient-festive flex items-center justify-center group-hover:scale-110 transition-transform">
                   <MapPin className="w-6 h-6 text-cream" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Location</p>
                   <p className="font-semibold">Gujarat, India</p>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </div>

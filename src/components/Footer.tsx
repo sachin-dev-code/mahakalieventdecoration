@@ -86,12 +86,15 @@ const Footer = () => {
                 <Instagram className="w-5 h-5 text-primary" />
                 <span className="text-sm">@mahakali_.event_and_decoration</span>
               </a>
-              <div className="flex items-start gap-3">
+              <a
+                href="https://maps.app.goo.gl/9HHYRKdXZj98Avgs7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 text-muted-foreground hover:text-primary transition-colors"
+              >
                 <MapPin className="w-5 h-5 text-primary mt-0.5" />
-                <p className="text-muted-foreground text-sm">
-                  Gujarat, India
-                </p>
-              </div>
+                <span className="text-sm">Gujarat, India</span>
+              </a>
             </div>
           </div>
         </div>
