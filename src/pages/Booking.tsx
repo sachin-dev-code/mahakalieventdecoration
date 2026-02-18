@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Calendar, Clock, MapPin, User, Phone, MessageSquare, ArrowRight, CheckCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,8 +49,26 @@ const Booking = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate booking submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const { error } = await supabase.from("bookings").insert({
+      full_name: formData.fullName.trim(),
+      mobile: formData.mobile.trim(),
+      village: formData.village.trim(),
+      service: formData.service,
+      event_date: formData.eventDate,
+      event_time: formData.eventTime || null,
+      venue: formData.venue.trim() || null,
+      additional_details: formData.additionalDetails.trim() || null,
+    });
+
+    if (error) {
+      toast({
+        title: "Submission Failed",
+        description: error.message || "Please try again.",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+      return;
+    }
 
     toast({
       title: "Booking Submitted! 🎉",

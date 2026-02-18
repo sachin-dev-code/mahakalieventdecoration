@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -21,8 +22,22 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const { error } = await supabase.from("contact_messages").insert({
+      name: formData.name.trim(),
+      mobile: formData.mobile.trim(),
+      village: formData.village.trim(),
+      message: formData.message.trim(),
+    });
+
+    if (error) {
+      toast({
+        title: "Failed to send message",
+        description: error.message || "Please try again.",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+      return;
+    }
 
     toast({
       title: "Message Sent!",
