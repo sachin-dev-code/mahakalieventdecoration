@@ -14,6 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          additional_details: string | null
+          created_at: string
+          event_date: string
+          event_time: string | null
+          full_name: string
+          id: string
+          mobile: string
+          service: string
+          venue: string | null
+          village: string
+        }
+        Insert: {
+          additional_details?: string | null
+          created_at?: string
+          event_date: string
+          event_time?: string | null
+          full_name: string
+          id?: string
+          mobile: string
+          service: string
+          venue?: string | null
+          village: string
+        }
+        Update: {
+          additional_details?: string | null
+          created_at?: string
+          event_date?: string
+          event_time?: string | null
+          full_name?: string
+          id?: string
+          mobile?: string
+          service?: string
+          venue?: string | null
+          village?: string
+        }
+        Relationships: []
+      }
+      contact_messages: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          mobile: string
+          name: string
+          village: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          mobile: string
+          name: string
+          village: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          mobile?: string
+          name?: string
+          village?: string
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           created_at: string
