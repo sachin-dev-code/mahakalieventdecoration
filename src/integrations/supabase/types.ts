@@ -51,6 +51,7 @@ export type Database = {
           id: string
           mobile: string
           service: string
+          status: string
           venue: string | null
           village: string
         }
@@ -63,6 +64,7 @@ export type Database = {
           id?: string
           mobile: string
           service: string
+          status?: string
           venue?: string | null
           village: string
         }
@@ -75,6 +77,7 @@ export type Database = {
           id?: string
           mobile?: string
           service?: string
+          status?: string
           venue?: string | null
           village?: string
         }
