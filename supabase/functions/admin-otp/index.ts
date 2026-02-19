@@ -73,8 +73,49 @@ Deno.serve(async (req) => {
         expires_at: expiresAt,
       });
 
-      // Log OTP server-side (integrate email provider like Resend for production)
-      console.log(`Admin OTP for ${email}: ${otpCode}`);
+      // Send OTP via Resend email
+      const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+      if (!RESEND_API_KEY) {
+        console.error("RESEND_API_KEY not configured");
+        return new Response(
+          JSON.stringify({ error: "Email service not configured" }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      const emailRes = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: "Mahakali Admin <onboarding@resend.dev>",
+          to: [email],
+          subject: "Your Admin OTP Code",
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px; background: #1a1a2e; border-radius: 12px; color: #fff;">
+              <h2 style="text-align: center; color: #d4a853; margin-bottom: 8px;">🔐 Admin Verification</h2>
+              <p style="text-align: center; color: #ccc; margin-bottom: 24px;">Use the code below to complete your login:</p>
+              <div style="text-align: center; background: #2a2a3e; padding: 20px; border-radius: 8px; margin-bottom: 24px;">
+                <span style="font-size: 36px; font-weight: bold; letter-spacing: 12px; color: #d4a853;">${otpCode}</span>
+              </div>
+              <p style="text-align: center; color: #999; font-size: 13px;">This code expires in 5 minutes. Do not share it with anyone.</p>
+            </div>
+          `,
+        }),
+      });
+
+      if (!emailRes.ok) {
+        const errBody = await emailRes.text();
+        console.error(`Resend email failed [${emailRes.status}]: ${errBody}`);
+        return new Response(
+          JSON.stringify({ error: "Failed to send OTP email" }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      console.log(`Admin OTP sent to ${email}`);
 
       return new Response(
         JSON.stringify({ success: true, message: "OTP sent to your email" }),
