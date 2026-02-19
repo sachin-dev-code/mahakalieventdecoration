@@ -73,39 +73,7 @@ Deno.serve(async (req) => {
         expires_at: expiresAt,
       });
 
-      // Send OTP via email using Supabase's built-in email
-      const res = await fetch(`${Deno.env.get("SUPABASE_URL")}/auth/v1/magiclink`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      // Also send a simple email with the OTP code using the Lovable AI gateway isn't appropriate
-      // Instead we'll use Supabase's inbuilt email by sending via the admin API
-      // For simplicity, we'll return the OTP in a way the edge function sends it
-      
-      // Use Resend or similar - but since we don't have that configured,
-      // let's use Supabase's auth.admin.generateLink to send an email
-      // Actually the simplest approach: include OTP in response for now and
-      // send via Supabase's built-in SMTP
-
-      // Send email with OTP
-      const emailRes = await supabaseAdmin.auth.admin.generateLink({
-        type: "magiclink",
-        email: email,
-        options: {
-          data: { otp_code: otpCode },
-        },
-      });
-
-      // Use the SMTP approach - send email via edge function
-      // Since we may not have a mail provider, we'll use the Supabase REST API
-      // to send the OTP. For production, integrate with a mail service.
-      
-      // For now, log the OTP server-side and return success
+      // Log OTP server-side (integrate email provider like Resend for production)
       console.log(`Admin OTP for ${email}: ${otpCode}`);
 
       return new Response(
