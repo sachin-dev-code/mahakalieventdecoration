@@ -16,6 +16,8 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
+  const [forgotMode, setForgotMode] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,6 +95,21 @@ const AdminLogin = () => {
     setLoading(false);
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) {
+      toast({ title: "Failed to send reset email", variant: "destructive" });
+    } else {
+      toast({ title: "Reset link sent! 📧", description: "Check your email for the password reset link." });
+      setForgotMode(false);
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-maroon/40 via-background to-background" />
@@ -107,12 +124,45 @@ const AdminLogin = () => {
             Admin Login
           </h1>
           <p className="text-muted-foreground">
-            Two-factor authentication required
+            {forgotMode ? "Reset your password" : "Two-factor authentication required"}
           </p>
         </div>
 
         <div className="card-festive p-8">
-          {step === "credentials" ? (
+          {forgotMode ? (
+            <>
+              <h2 className="font-display text-xl font-bold text-center mb-6">
+                Forgot Password
+              </h2>
+              <form onSubmit={handleForgotPassword} className="space-y-5">
+                <div>
+                  <label className="block text-sm font-medium mb-2 flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-primary" />
+                    Email
+                  </label>
+                  <Input
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    placeholder="admin@example.com"
+                    required
+                    className="bg-muted border-border"
+                  />
+                </div>
+                <Button type="submit" className="btn-gold w-full" disabled={loading}>
+                  {loading ? "Sending..." : "Send Reset Link"}
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+                <button
+                  type="button"
+                  onClick={() => setForgotMode(false)}
+                  className="w-full text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  ← Back to login
+                </button>
+              </form>
+            </>
+          ) : step === "credentials" ? (
             <>
               <h2 className="font-display text-xl font-bold text-center mb-6">
                 Step 1: Sign In
@@ -146,14 +196,17 @@ const AdminLogin = () => {
                     className="bg-muted border-border"
                   />
                 </div>
-                <Button
-                  type="submit"
-                  className="btn-gold w-full"
-                  disabled={loading}
-                >
+                <Button type="submit" className="btn-gold w-full" disabled={loading}>
                   {loading ? "Authenticating..." : "Continue"}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
+                <button
+                  type="button"
+                  onClick={() => setForgotMode(true)}
+                  className="w-full text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Forgot Password?
+                </button>
               </form>
             </>
           ) : (
