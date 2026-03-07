@@ -93,17 +93,48 @@ const AdminDashboard = () => {
     setLoading(false);
   };
 
+  const sendSmsNotification = async (mobile: string, fullName: string, status: string) => {
+    try {
+      const statusText = status === "approved" ? "APPROVED ✅" : "REJECTED ❌";
+      const message = `Dear ${fullName}, your booking with Mahakali Event & Decoration has been ${statusText}. Thank you for choosing us!`;
+      
+      // Format number: if it doesn't start with +, add +91
+      let formattedNumber = mobile.trim();
+      if (!formattedNumber.startsWith("+")) {
+        formattedNumber = "+91" + formattedNumber.replace(/^0+/, "");
+      }
+
+      const { data, error } = await supabase.functions.invoke("send-sms", {
+        body: { to: formattedNumber, message },
+      });
+
+      if (error) {
+        console.error("SMS error:", error);
+        toast({ title: "Booking updated but SMS failed to send", variant: "destructive" });
+      } else {
+        toast({ title: `📱 SMS sent to ${fullName}` });
+      }
+    } catch (err) {
+      console.error("SMS error:", err);
+    }
+  };
+
   const handleUpdateStatus = useCallback(async (id: string, status: string) => {
     setActionLoading(true);
+    const booking = bookings.find((b) => b.id === id);
     const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
     if (error) {
       toast({ title: "Failed to update status", variant: "destructive" });
     } else {
       toast({ title: status === "approved" ? "✅ Booking approved!" : "❌ Booking rejected" });
       setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
+      // Send SMS notification
+      if (booking) {
+        sendSmsNotification(booking.mobile, booking.full_name, status);
+      }
     }
     setActionLoading(false);
-  }, [toast]);
+  }, [toast, bookings]);
 
   const handleDeleteReview = async (id: string) => {
     const { error } = await supabase.from("reviews").delete().eq("id", id);
