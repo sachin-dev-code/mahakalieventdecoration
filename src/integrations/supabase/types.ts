@@ -18,7 +18,9 @@ export type Database = {
         Row: {
           created_at: string
           expires_at: string
+          failed_attempts: number
           id: string
+          locked: boolean
           otp_code: string
           used: boolean
           user_id: string
@@ -26,7 +28,9 @@ export type Database = {
         Insert: {
           created_at?: string
           expires_at?: string
+          failed_attempts?: number
           id?: string
+          locked?: boolean
           otp_code: string
           used?: boolean
           user_id: string
@@ -34,10 +38,33 @@ export type Database = {
         Update: {
           created_at?: string
           expires_at?: string
+          failed_attempts?: number
           id?: string
+          locked?: boolean
           otp_code?: string
           used?: boolean
           user_id?: string
+        }
+        Relationships: []
+      }
+      admin_sessions: {
+        Row: {
+          expires_at: string
+          id: string
+          user_id: string
+          verified_at: string
+        }
+        Insert: {
+          expires_at?: string
+          id?: string
+          user_id: string
+          verified_at?: string
+        }
+        Update: {
+          expires_at?: string
+          id?: string
+          user_id?: string
+          verified_at?: string
         }
         Relationships: []
       }
