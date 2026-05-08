@@ -62,7 +62,6 @@ const AdminDashboard = () => {
   const checkAdminAccess = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) { navigate("/admin"); return; }
-    if (sessionStorage.getItem("admin_2fa_verified") !== "true") { navigate("/admin"); return; }
 
     const { data: roleData } = await supabase
       .from("user_roles")
@@ -77,6 +76,19 @@ const AdminDashboard = () => {
       navigate("/admin");
       return;
     }
+
+    // Server-side 2FA session check (cannot be faked client-side)
+    const { data: sessionCheck, error: checkErr } = await supabase.functions.invoke(
+      "admin-otp",
+      { body: { action: "check_session" } }
+    );
+    if (checkErr || !sessionCheck?.verified) {
+      toast({ title: "2FA verification required", variant: "destructive" });
+      await supabase.auth.signOut();
+      navigate("/admin");
+      return;
+    }
+
     fetchAllData();
   };
 
@@ -147,7 +159,9 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = async () => {
-    sessionStorage.removeItem("admin_2fa_verified");
+    try {
+      await supabase.functions.invoke("admin-otp", { body: { action: "logout" } });
+    } catch { /* ignore */ }
     await supabase.auth.signOut();
     navigate("/admin");
   };

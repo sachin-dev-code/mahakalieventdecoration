@@ -83,9 +83,6 @@ const AdminLogin = () => {
         return;
       }
 
-      // Store admin verification in session
-      sessionStorage.setItem("admin_2fa_verified", "true");
-
       toast({ title: "Welcome, Admin! 🔐" });
       navigate("/admin/dashboard");
     } catch {
