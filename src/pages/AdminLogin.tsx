@@ -25,25 +25,31 @@ const AdminLogin = () => {
 
     try {
       // Step 1: Authenticate with email/password
-      const { error: authError } = await supabase.auth.signInWithPassword({
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (authError) {
-        toast({ title: "Invalid credentials", variant: "destructive" });
+      if (authError || !authData?.user) {
+        toast({ title: "Invalid credentials", description: authError?.message, variant: "destructive" });
         setLoading(false);
         return;
       }
 
-      // Step 2: Verify admin role
-      const { data: { session } } = await supabase.auth.getSession();
-      const { data: roleData } = await supabase
+      // Step 2: Verify admin role using the freshly returned user id
+      const { data: roleData, error: roleError } = await supabase
         .from("user_roles")
         .select("role")
-        .eq("user_id", session!.user.id)
+        .eq("user_id", authData.user.id)
         .eq("role", "admin")
         .maybeSingle();
+
+      if (roleError) {
+        toast({ title: "Could not verify admin role", description: roleError.message, variant: "destructive" });
+        await supabase.auth.signOut();
+        setLoading(false);
+        return;
+      }
 
       if (!roleData) {
         toast({
