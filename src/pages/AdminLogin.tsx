@@ -36,12 +36,16 @@ const AdminLogin = () => {
         return;
       }
 
-      // Step 2: Request OTP via edge function
-      const { data, error } = await supabase.functions.invoke("admin-otp", {
-        body: { action: "send", email },
-      });
+      // Step 2: Verify admin role
+      const { data: { session } } = await supabase.auth.getSession();
+      const { data: roleData } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", session!.user.id)
+        .eq("role", "admin")
+        .maybeSingle();
 
-      if (error || !data?.success) {
+      if (!roleData) {
         toast({
           title: "Access denied",
           description: "You don't have admin access.",
@@ -52,11 +56,8 @@ const AdminLogin = () => {
         return;
       }
 
-      toast({
-        title: "OTP Sent! 📧",
-        description: "Check your email for the 6-digit verification code.",
-      });
-      setStep("otp");
+      toast({ title: "Welcome, Admin! 🔐" });
+      navigate("/admin/dashboard");
     } catch {
       toast({ title: "Something went wrong", variant: "destructive" });
     }
