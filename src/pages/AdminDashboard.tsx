@@ -77,18 +77,6 @@ const AdminDashboard = () => {
       return;
     }
 
-    // Server-side 2FA session check (cannot be faked client-side)
-    const { data: sessionCheck, error: checkErr } = await supabase.functions.invoke(
-      "admin-otp",
-      { body: { action: "check_session" } }
-    );
-    if (checkErr || !sessionCheck?.verified) {
-      toast({ title: "2FA verification required", variant: "destructive" });
-      await supabase.auth.signOut();
-      navigate("/admin");
-      return;
-    }
-
     fetchAllData();
   };
 
